@@ -12,18 +12,21 @@ const deployDomain: DeployFunction = async function (hre: HardhatRuntimeEnvironm
         from: deployer,
         log: true,
         args,
-        waitConfirmations: isDevelopmentEnvironment ? 0 : 1,
+        waitConfirmations: isDevelopmentEnvironment ? 0 : 6,
     });
     log("Contract deployed to:", Domains.address);
     log("Contract deployed by:", deployer);
     if (!isDevelopmentEnvironment) {
         log("Verifying Domains contract...");
-        await run("verify:verify", {
-            address: Domains.address,
-            constructorArguments: args,
-        })
+        try {
+            await run("verify:verify", {
+                address: Domains.address,
+                constructorArguments: args,
+            })
+        } catch (e) {
+            log("Error verifying Domains contract:", e);
+        }
     }
-
 };
 export default deployDomain;
 deployDomain.tags = ['all', 'domain'];

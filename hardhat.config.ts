@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy"
 import "@nomiclabs/hardhat-ethers"
+import "dotenv/config"
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -13,10 +14,22 @@ const config: HardhatUserConfig = {
       }
     }
   },
+  networks: {
+    mumbai: {
+      url: "https://rpc.ankr.com/polygon_mumbai",
+      accounts: [process.env.PRIVATE_KEY!],
+      saveDeployments: true,
+    }
+  },
   namedAccounts: {
     deployer: {
       default: 0,
     }
+  },
+  etherscan: {
+    apiKey: {
+      polygonMumbai: process.env.POLYGONSCAN_KEY!,
+    },
   }
 };
 
