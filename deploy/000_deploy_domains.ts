@@ -7,7 +7,7 @@ const deployDomain: DeployFunction = async function (hre: HardhatRuntimeEnvironm
     const { deployer } = await getNamedAccounts();
 
     const isDevelopmentEnvironment = network.name === 'hardhat' || network.name === 'localhost';
-    const args: never[] = []
+    const args = ["bbx"]
     const Domains = await deploy("Domains", {
         from: deployer,
         log: true,

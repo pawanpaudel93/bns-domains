@@ -16,17 +16,23 @@ describe("Domains", function () {
   });
 
   it("Should be able to create a domain", async () => {
-    const tx = await domainContract.register("doom");
+    const price = ethers.utils.parseEther("0.1");
+    const tx = await domainContract.register("rowdy", {
+      value: price,
+    });
     await tx.wait();
-    expect(await domainContract.getAddress("doom")).equals(await deployer.getAddress());
+    expect(await domainContract.getAddress("rowdy")).equals(await deployer.getAddress());
+    expect(await ethers.provider.getBalance(domainContract.address)).greaterThanOrEqual(price);
   });
 
   it("Should be able to add a new record", async () => {
     const record = "Haha my bbx domain"
-    let tx = await domainContract.register("doom");
+    let tx = await domainContract.register("rowdy", {
+      value: ethers.utils.parseEther("0.1"),
+    });
     await tx.wait();
-    tx = await domainContract.setRecord("doom", record);
+    tx = await domainContract.setRecord("rowdy", record);
     await tx.wait();
-    expect(await domainContract.getRecord("doom")).equals(record);
+    expect(await domainContract.getRecord("rowdy")).equals(record);
   })
 });
